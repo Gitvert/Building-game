@@ -10,7 +10,7 @@ public class Worker : MonoBehaviour
 	Vector3 mTarget = new Vector3(0,0,0);
 	float mWorkDuration = 0;
 	float mWorkInitiated = 0;
-	Task mCurrentTask = null;
+	BuildingTask mCurrentTask = null;
 	// Use this for initialization
 	void Start () 
 	{
@@ -44,7 +44,7 @@ public class Worker : MonoBehaviour
 				
 				if (Time.time > mWorkInitiated + mWorkDuration)
 				{
-					mCurrentTask.getCell().addBuilding(mCurrentTask.getBuilding ());
+					mCurrentTask.getCell().addBuilding(mCurrentTask.getBuilding());
 					//When the building is completed the worker becomes idle and can recieve new tasks
 					resetWorker();
 				}
@@ -60,7 +60,7 @@ public class Worker : MonoBehaviour
 	//This function is called from the task manager when a new task is added and this worker isn't active. When a task is completed the worker checks the task queue to see if there are any waiting tasks
 	public void alert ()
 	{
-		mCurrentTask = taskManager.getFirstTask();
+		mCurrentTask = taskManager.getFirstBuildingTask();
 		
 		if (mCurrentTask != null)
 		{

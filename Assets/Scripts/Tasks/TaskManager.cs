@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class TaskManager : MonoBehaviour 
 {
 	List<Worker> mWorkers = new List<Worker>();
-	Queue<Task> mTasks = new Queue<Task>();
+	Queue<BuildingTask> mBuildingTasks = new Queue<BuildingTask>();
 	// Use this for initialization
 	void Start () 
 	{
@@ -24,9 +24,9 @@ public class TaskManager : MonoBehaviour
 	}
 
 	//Adds a new task to the task queue and alerts the first free worker of this newly added task
-	public void addTask (Task t)
+	public void addBuildingTask (BuildingTask t)
 	{
-		mTasks.Enqueue(t);
+        mBuildingTasks.Enqueue(t);
 		
 		foreach (Worker w in mWorkers)
 		{
@@ -36,10 +36,10 @@ public class TaskManager : MonoBehaviour
 	}
 
 	//Returns the first task in the queue if there is any, else returns null
-	public Task getFirstTask ()
+	public BuildingTask getFirstBuildingTask ()
 	{
-		if (mTasks.Count > 0)
-			return mTasks.Dequeue();
+		if (mBuildingTasks.Count > 0)
+			return mBuildingTasks.Dequeue();
 		else 
 			return null;
 	}

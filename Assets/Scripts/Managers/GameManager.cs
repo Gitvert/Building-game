@@ -3,25 +3,17 @@ using System.Collections;
 
 public class GameManager : MonoBehaviour 
 {
-	int mTreeAmount;
-	int mTreeLimit;
-	int mStoneAmount;
-	int mStoneLimit;
-	int mGoldAmount;
-	int mGoldLimit;
 	int mPopulationLimit;
 	int mCurrentPopulation;
+    ResourceManager mResourceManager;
+    TaskManager mTaskManager;
 
 	// Use this for initialization
 	void Start () 
 	{
-		mTreeAmount = 10;
-		mTreeLimit = 1000;
-		mStoneAmount = 10;
-		mStoneLimit = 1000;
-		mGoldAmount = 10;
-		mGoldLimit = 1000;
-		mPopulationLimit = 10;
+        mResourceManager = GameObjectHelper.getComponent<ResourceManager>(GameObjectHelper.findInScene("Misc"));
+        mTaskManager = GameObjectHelper.getComponent<TaskManager>(GameObjectHelper.findInScene("Misc"));
+        mPopulationLimit = 10;
 		//TODO: Change this to a dynamic solution
 		mCurrentPopulation = 5;
 	}
@@ -30,19 +22,6 @@ public class GameManager : MonoBehaviour
 	void Update () 
 	{
 	
-	}
-	//Checks if there are enough resources for a specific task
-	public bool requestResourceUsage (int tree, int stone, int gold)
-	{
-		//If there are enough resources the caller is notified and the resources gets removed
-		if (tree <= mTreeAmount && stone <= mStoneAmount && gold <= mGoldAmount)
-		{
-			mTreeAmount -= tree;
-			mStoneAmount -= stone;
-			mGoldAmount -= gold;
-			return true;
-		}
-		return false;
 	}
 
 	public bool checkPopulationRoom() 
@@ -58,13 +37,17 @@ public class GameManager : MonoBehaviour
 		mPopulationLimit += n;
 	}
 
-	#region getters
-	public int getTreeAmount() {return mTreeAmount;}
-	public int getTreeLimit() {return mTreeLimit;}
-	public int getStoneAmount() {return mStoneAmount;}
-	public int getStoneLimit() {return mStoneLimit;}
-	public int getGoldAmount() {return mGoldAmount;}
-	public int getGoldLimit() {return mGoldLimit;}
+    public void attemptBuildingTask(Cell cell)
+    {
+        Building building = GuiController.getSelectedBuilding();
+        if (mResourceManager.requestResourceUsage(building.getTreeCost(), building.getStoneCost(), building.getGoldCost()))
+        {
+            cell.setOccupationStatus(Cell.Occupied.Constructing);
+            mTaskManager.addBuildingTask(new BuildingTask(new Vector3(cell.transform.position.x, 1, cell.transform.position.z), GuiController.getSelectedBuilding(), cell));
+        }
+    }
+
+    #region getters
 	public int getPopulationLimit() {return mPopulationLimit;}
 	public int getCurrentPopulation() {return mCurrentPopulation;}
 	#endregion

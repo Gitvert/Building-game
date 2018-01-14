@@ -7,6 +7,7 @@ public class GuiController : MonoBehaviour
 	List<Building> mBuildings;
 	BuildingManager mBuildingManager;
 	GameManager mGameManager;
+    ResourceManager mResourceManager;
 
 	bool buildingGUIActive = false;
 	static Building selectedBuilding = null;
@@ -18,8 +19,9 @@ public class GuiController : MonoBehaviour
 		mBuildings = mBuildingManager.getBuildings();
 
 		mGameManager = GameObjectHelper.getComponent<GameManager>(gameObject);
+        mResourceManager = GameObjectHelper.getComponent<ResourceManager>(gameObject);
 
-		infoTextStyle.alignment = TextAnchor.UpperLeft;
+        infoTextStyle.alignment = TextAnchor.UpperLeft;
 		infoTextStyle.normal.textColor = Color.white;
 		infoTextStyle.wordWrap = true;
 	}
@@ -33,7 +35,6 @@ public class GuiController : MonoBehaviour
 			if (!buildingGUIActive)
 			{
 				selectedBuilding = null;
-				Cell.setBuildingSelected(false);
 			}
 		}
 	}
@@ -55,7 +56,6 @@ public class GuiController : MonoBehaviour
 		{
 			if (GUI.Button (new Rect(5,5 + i * 50,40,40), new GUIContent(mBuildings[i].getIcon (), mBuildings[i].getName ())))
 			{
-				Cell.setBuildingSelected(true);
 				selectedBuilding = mBuildings[i];
 			}
 		}
@@ -74,8 +74,8 @@ public class GuiController : MonoBehaviour
 	//Displays info about the current resources
 	void resourceGUI ()
 	{
-		string resourceInfo = "Population: " + mGameManager.getCurrentPopulation().ToString() + "/" + mGameManager.getPopulationLimit().ToString() + "\t\tTree: " + 
-			mGameManager.getTreeAmount().ToString() + "/" + mGameManager.getTreeLimit().ToString();
+		string resourceInfo = "Population: " + mGameManager.getCurrentPopulation().ToString() + "/" + mGameManager.getPopulationLimit().ToString() + "\t\tTree: " +
+            mResourceManager.getTreeAmount().ToString() + "/" + mResourceManager.getTreeLimit().ToString();
 		GUI.Box(new Rect(Screen.width-300, 0, 300, 25), "");
 		GUI.Box(new Rect(Screen.width-295, 5, 295, 25), resourceInfo, infoTextStyle);
 	}

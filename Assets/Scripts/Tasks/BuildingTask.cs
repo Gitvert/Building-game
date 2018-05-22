@@ -10,7 +10,7 @@ public class BuildingTask : Task {
     public BuildingTask(Vector3 pos, Building building, Cell cell)
     {
         mPosition = pos;
-        mDuration = building.getBuildTime();
+        mDuration = building.GetBuildTime();
         mBuilding = building;
         mCell = cell;
     }

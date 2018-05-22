@@ -4,84 +4,84 @@ using System.Collections.Generic;
 
 public class GuiController : MonoBehaviour 
 {
-	List<Building> mBuildings;
-	BuildingManager mBuildingManager;
-	GameManager mGameManager;
-    ResourceManager mResourceManager;
+	private List<Building> _buildings;
+	private BuildingManager _buildingManager;
+	private GameManager _gameManager;
+    private ResourceManager _resourceManager;
 
-	bool buildingGUIActive = false;
-	static Building selectedBuilding = null;
-	GUIStyle infoTextStyle = new GUIStyle();
+	private bool _buildingGuiActive = false;
+	private static Building _selectedBuilding = null;
+	private GUIStyle _infoTextStyle = new GUIStyle();
 	// Use this for initialization
-	void Start () 
+	private void Start () 
 	{
-		mBuildingManager = GameObjectHelper.getComponent<BuildingManager>(gameObject);
-		mBuildings = mBuildingManager.getBuildings();
+		_buildingManager = GameObjectHelper.getComponent<BuildingManager>(gameObject);
+		_buildings = _buildingManager.GetBuildings();
 
-		mGameManager = GameObjectHelper.getComponent<GameManager>(gameObject);
-        mResourceManager = GameObjectHelper.getComponent<ResourceManager>(gameObject);
+		_gameManager = GameObjectHelper.getComponent<GameManager>(gameObject);
+        _resourceManager = GameObjectHelper.getComponent<ResourceManager>(gameObject);
 
-        infoTextStyle.alignment = TextAnchor.UpperLeft;
-		infoTextStyle.normal.textColor = Color.white;
-		infoTextStyle.wordWrap = true;
+        _infoTextStyle.alignment = TextAnchor.UpperLeft;
+		_infoTextStyle.normal.textColor = Color.white;
+		_infoTextStyle.wordWrap = true;
 	}
 	
 	// Update is called once per frame
-	void Update () 
+	private void Update () 
 	{
 		if (Input.GetKeyDown(KeyCode.B))
 		{
-			buildingGUIActive = !buildingGUIActive;
-			if (!buildingGUIActive)
+			_buildingGuiActive = !_buildingGuiActive;
+			if (!_buildingGuiActive)
 			{
-				selectedBuilding = null;
+				_selectedBuilding = null;
 			}
 		}
 	}
 
-	void OnGUI ()
+	private void OnGUI ()
 	{	
-		resourceGUI();
-		if (buildingGUIActive)
-			buildingGUI();
+		ResourceGui();
+		if (_buildingGuiActive)
+			BuildingGui();
 	}
 
 	//The gui for selecting buildings
-	void buildingGUI ()
+	private void BuildingGui ()
 	{
-		GUI.Box(new Rect(0,0,50,50 * mBuildings.Count), "");
+		GUI.Box(new Rect(0,0,50,50 * _buildings.Count), "");
 		
 		//Adds all the buttons
-		for (int i = 0; i < mBuildings.Count; i++)
+		for (int i = 0; i < _buildings.Count; i++)
 		{
-			if (GUI.Button (new Rect(5,5 + i * 50,40,40), new GUIContent(mBuildings[i].getIcon (), mBuildings[i].getName ())))
+			if (GUI.Button (new Rect(5,5 + i * 50,40,40), new GUIContent(_buildings[i].GetIcon (), _buildings[i].GetName ())))
 			{
-				selectedBuilding = mBuildings[i];
+				_selectedBuilding = _buildings[i];
 			}
 		}
 		
 		//Checks if a button is hovered by the mouse and if so displays information about that building
-		foreach (Building b in mBuildings)
+		foreach (Building b in _buildings)
 		{
-			if (GUI.tooltip.CompareTo(b.getName()) == 0)
+			if (GUI.tooltip.CompareTo(b.GetName()) == 0)
 			{
 				GUI.Box(new Rect(50,0,115,150),"");
-				GUI.Box(new Rect(55,0,110,150), b.getGUIText(), infoTextStyle);
+				GUI.Box(new Rect(55,0,110,150), b.GetGuiText(), _infoTextStyle);
 			}
 		}
 	}
 
 	//Displays info about the current resources
-	void resourceGUI ()
+	private void ResourceGui ()
 	{
-		string resourceInfo = "Population: " + mGameManager.getCurrentPopulation().ToString() + "/" + mGameManager.getPopulationLimit().ToString() + "\t\tTree: " +
-            mResourceManager.getTreeAmount().ToString() + "/" + mResourceManager.getTreeLimit().ToString();
+		string resourceInfo = "Population: " + _gameManager.getCurrentPopulation().ToString() + "/" + _gameManager.getPopulationLimit().ToString() + "\t\tTree: " +
+            _resourceManager.GetTreeAmount().ToString() + "/" + _resourceManager.GetTreeLimit().ToString();
 		GUI.Box(new Rect(Screen.width-300, 0, 300, 25), "");
-		GUI.Box(new Rect(Screen.width-295, 5, 295, 25), resourceInfo, infoTextStyle);
+		GUI.Box(new Rect(Screen.width-295, 5, 295, 25), resourceInfo, _infoTextStyle);
 	}
 
-	static public Building getSelectedBuilding ()
+	public static Building GetSelectedBuilding ()
 	{
-		return selectedBuilding;
+		return _selectedBuilding;
 	}
 }

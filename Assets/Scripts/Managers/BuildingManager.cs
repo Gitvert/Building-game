@@ -6,19 +6,19 @@ using System.Xml.Linq;
 
 public class BuildingManager : MonoBehaviour
 {
-	List<Building> mBuildings = new List<Building>();
+	private List<Building> _buildings = new List<Building>();
 
-	void Start () 
+	private void Start () 
 	{
-		loadBuildingsFromDisc();
+		LoadBuildingsFromDisc();
 	}
 
 	//Loads all the buildings that the game will contain from a xml file
-	void loadBuildingsFromDisc ()
+	private void LoadBuildingsFromDisc ()
 	{
-		XDocument xmlDoc = XDocument.Load ("BuildingGame_Data/Buildings.xml");
+		var xmlDoc = XDocument.Load ("BuildingGame_Data/Buildings.xml");
 
-		mBuildings = xmlDoc.Descendants("building")
+		_buildings = xmlDoc.Descendants("building")
 			.Select(be => new Building (
 				(string)be.Element("name"),
 				(int)be.Element("buildTime"),
@@ -29,8 +29,8 @@ public class BuildingManager : MonoBehaviour
 				.ToList();
 	}
 
-	public List<Building> getBuildings ()
+	public List<Building> GetBuildings ()
 	{
-		return mBuildings;
+		return _buildings;
 	}
 }

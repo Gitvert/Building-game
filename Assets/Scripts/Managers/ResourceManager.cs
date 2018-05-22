@@ -4,42 +4,44 @@ using UnityEngine;
 
 public class ResourceManager : MonoBehaviour
 {
-    int mTreeAmount;
-    int mTreeLimit;
-    int mStoneAmount;
-    int mStoneLimit;
-    int mGoldAmount;
-    int mGoldLimit;
+    private int _treeAmount;
+    private int _treeLimit;
+    private int _stoneAmount;
+    private int _stoneLimit;
+    private int _goldAmount;
+    private int _goldLimit;
 
     public ResourceManager()
     {
-        mTreeAmount = 10;
-        mTreeLimit = 1000;
-        mStoneAmount = 10;
-        mStoneLimit = 1000;
-        mGoldAmount = 10;
-        mGoldLimit = 1000;
+        _treeAmount = 10;
+        _treeLimit = 1000;
+        _stoneAmount = 10;
+        _stoneLimit = 1000;
+        _goldAmount = 10;
+        _goldLimit = 1000;
     }
 
     //Checks if there are enough resources for a specific task
-    public bool requestResourceUsage(int tree, int stone, int gold)
+    public bool RequestResourceUsage(int tree, int stone, int gold)
     {
-        if (tree <= mTreeAmount && stone <= mStoneAmount && gold <= mGoldAmount)
+        if (tree > _treeAmount || stone > _stoneAmount || gold > _goldAmount)
         {
-            mTreeAmount -= tree;
-            mStoneAmount -= stone;
-            mGoldAmount -= gold;
-            return true;
+            return false;
         }
-        return false;
+        
+        _treeAmount -= tree;
+        _stoneAmount -= stone;
+        _goldAmount -= gold;
+        
+        return true;
     }
 
     #region getters
-    public int getTreeAmount() { return mTreeAmount; }
-    public int getTreeLimit() { return mTreeLimit; }
-    public int getStoneAmount() { return mStoneAmount; }
-    public int getStoneLimit() { return mStoneLimit; }
-    public int getGoldAmount() { return mGoldAmount; }
-    public int getGoldLimit() { return mGoldLimit; }
+    public int GetTreeAmount() { return _treeAmount; }
+    public int GetTreeLimit() { return _treeLimit; }
+    public int GetStoneAmount() { return _stoneAmount; }
+    public int GetStoneLimit() { return _stoneLimit; }
+    public int GetGoldAmount() { return _goldAmount; }
+    public int GetGoldLimit() { return _goldLimit; }
     #endregion
 }

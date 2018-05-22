@@ -1,23 +1,22 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class Grid : MonoBehaviour 
 {
-	public GameObject tile;
-	public int mapSize;
-	Cell[,] mCells;
-	GameObject[,] mTiles;
+	public GameObject Tile;
+	public int MapSize;
+	private Cell[,] _cells;
+	private GameObject[,] _tiles;
 	// Use this for initialization
-	void Start () 
+	private void Start () 
 	{
-		mCells = new Cell[mapSize,mapSize];
-		mTiles = new GameObject[mapSize,mapSize];
-		for (int i = 0; i < mapSize; i++)
+		_cells = new Cell[MapSize,MapSize];
+		_tiles = new GameObject[MapSize,MapSize];
+		for (var i = 0; i < MapSize; i++)
 		{
-			for (int j = 0; j < mapSize; j++)
+			for (var j = 0; j < MapSize; j++)
 			{
 				//mCells[i,j] = new Cell(i,j,tile);
-				Instantiate(tile, new Vector3(i,0,j), Quaternion.Euler(0,0,0));
+				Instantiate(Tile, new Vector3(i,0,j), Quaternion.Euler(0,0,0));
 			}
 		}
 	}
@@ -30,6 +29,6 @@ public class Grid : MonoBehaviour
 
 	public Cell getCell(int x, int y)
 	{
-		return mCells[x,y];
+		return _cells[x,y];
 	}
 }

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class UnitManager : MonoBehaviour 
 {
-	public List<GameObject> selectedUnits = new List<GameObject>();
+	public List<GameObject> SelectedUnits = new List<GameObject>();
 	// Use this for initialization
 	void Start () 
 	{
@@ -17,8 +17,8 @@ public class UnitManager : MonoBehaviour
 	
 	}
 	
-	public void addUnit (GameObject unit)
+	public void AddUnit (GameObject unit)
 	{
-		selectedUnits.Add(unit);
+		SelectedUnits.Add(unit);
 	}
 }

@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
     TaskManager mTaskManager;
 
 	// Use this for initialization
-	void Start () 
+	private void Start () 
 	{
         mResourceManager = GameObjectHelper.getComponent<ResourceManager>(GameObjectHelper.findInScene("Misc"));
         mTaskManager = GameObjectHelper.getComponent<TaskManager>(GameObjectHelper.findInScene("Misc"));
@@ -39,11 +39,11 @@ public class GameManager : MonoBehaviour
 
     public void attemptBuildingTask(Cell cell)
     {
-        Building building = GuiController.getSelectedBuilding();
-        if (mResourceManager.requestResourceUsage(building.getTreeCost(), building.getStoneCost(), building.getGoldCost()))
+        Building building = GuiController.GetSelectedBuilding();
+        if (mResourceManager.RequestResourceUsage(building.GetTreeCost(), building.GetStoneCost(), building.GetGoldCost()))
         {
-            cell.setOccupationStatus(Cell.Occupied.Constructing);
-            mTaskManager.addBuildingTask(new BuildingTask(new Vector3(cell.transform.position.x, 1, cell.transform.position.z), GuiController.getSelectedBuilding(), cell));
+            cell.SetOccupationStatus(Cell.Occupied.Constructing);
+            mTaskManager.AddBuildingTask(new BuildingTask(new Vector3(cell.transform.position.x, 1, cell.transform.position.z), GuiController.GetSelectedBuilding(), cell));
         }
     }
 

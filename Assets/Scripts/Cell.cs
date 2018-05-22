@@ -85,10 +85,10 @@ public class Cell : MonoBehaviour
             {
                 gameObject.GetComponent<Renderer>().material.color = Color.green;
             }
-            /*else
+            else
             {
                 gameObject.GetComponent<Renderer>().material.color = Color.red;
-            }*/
+            }
         }
 	}
 

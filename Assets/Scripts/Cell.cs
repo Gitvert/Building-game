@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Events;
 
 public class Cell : MonoBehaviour 
 {
@@ -9,13 +10,15 @@ public class Cell : MonoBehaviour
 	public Material mMaterial;
 
 	static TaskManager _taskManager;
-	private static GameManager _gameManager;
+	private GameManager _gameManager;
+	private EventDispatcher _eventDispatcher;
 	
 	// Use this for initialization
-	void Start ()
+	private void Start ()
 	{
 		_taskManager = GameObjectHelper.getComponent<TaskManager>(GameObjectHelper.findInScene("Misc"));
 		_gameManager = GameObjectHelper.getComponent<GameManager>(GameObjectHelper.findInScene("Misc"));
+		_eventDispatcher = EventDispatcher.GetInstance();
 
 		RandomizeNature();
 	}
@@ -29,7 +32,7 @@ public class Cell : MonoBehaviour
 	//Randomizes different nature objects to every tile
 	private void RandomizeNature()
 	{
-		int randValue = Random.Range (0,100);
+		var randValue = Random.Range (0,100);
 
 		if (randValue > 98)
 		{
@@ -95,13 +98,15 @@ public class Cell : MonoBehaviour
 	//Issues a building task
 	private void OnMouseDown ()
 	{
-		if (GuiController.GetSelectedBuilding() == null)
+		var selectedBuilding = GuiController.GetSelectedBuilding();
+		if (selectedBuilding == null)
 		{
 			return;
 		}
 		if (mOccupied == Occupied.Empty)
 		{
-			_gameManager.attemptBuildingTask(this);
+			//_gameManager.attemptBuildingTask(this);
+			_eventDispatcher.AddEvent(new BuildOrderEvent(this, selectedBuilding));
 		}
 	}
 }

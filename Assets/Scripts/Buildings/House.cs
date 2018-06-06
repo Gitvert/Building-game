@@ -9,7 +9,7 @@ public class House : MonoBehaviour
 	void Start () 
 	{
 		mGameManager = GameObjectHelper.getComponent<GameManager>(GameObjectHelper.findInScene("Misc"));
-		mGameManager.increasePopulationLimit(populationLimitIncrease);
+		mGameManager.IncreasePopulationLimit(populationLimitIncrease);
 	}
 	
 	// Update is called once per frame

@@ -1,21 +1,26 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using Events;
+using UnityEngine;
+using Debug = System.Diagnostics.Debug;
 
-public class GameManager : MonoBehaviour 
+public class GameManager : MonoBehaviour, ISubscriber
 {
-	int mPopulationLimit;
-	int mCurrentPopulation;
-    ResourceManager mResourceManager;
-    TaskManager mTaskManager;
+	private int _populationLimit;
+	private int _currentPopulation;
+    private ResourceManager _resourceManager;
+    private TaskManager _taskManager;
+	private EventDispatcher _eventDispatcher;
 
 	// Use this for initialization
 	private void Start () 
 	{
-        mResourceManager = GameObjectHelper.getComponent<ResourceManager>(GameObjectHelper.findInScene("Misc"));
-        mTaskManager = GameObjectHelper.getComponent<TaskManager>(GameObjectHelper.findInScene("Misc"));
-        mPopulationLimit = 10;
+        _resourceManager = GameObjectHelper.getComponent<ResourceManager>(GameObjectHelper.findInScene("Misc"));
+        _taskManager = GameObjectHelper.getComponent<TaskManager>(GameObjectHelper.findInScene("Misc"));
+		_eventDispatcher = EventDispatcher.GetInstance();
+		_eventDispatcher.Subscribe(this);
+		
+        _populationLimit = 10;
 		//TODO: Change this to a dynamic solution
-		mCurrentPopulation = 5;
+		_currentPopulation = 5;
 	}
 	
 	// Update is called once per frame
@@ -24,31 +29,39 @@ public class GameManager : MonoBehaviour
 	
 	}
 
-	public bool checkPopulationRoom() 
+	public bool CheckPopulationRoom()
 	{
-		if (mCurrentPopulation < mPopulationLimit)
-			return true;
-		else
-			return false;
+		return _currentPopulation < _populationLimit;
 	}
 
-	public void increasePopulationLimit (int n)
+	public void IncreasePopulationLimit (int n)
 	{
-		mPopulationLimit += n;
+		_populationLimit += n;
 	}
 
-    public void attemptBuildingTask(Cell cell)
+    private void AttemptBuildingTask(Cell cell, Building building)
     {
-        Building building = GuiController.GetSelectedBuilding();
-        if (mResourceManager.RequestResourceUsage(building.GetTreeCost(), building.GetStoneCost(), building.GetGoldCost()))
+        if (_resourceManager.RequestResourceUsage(building.GetTreeCost(), building.GetStoneCost(), building.GetGoldCost()))
         {
             cell.SetOccupationStatus(Cell.Occupied.Constructing);
-            mTaskManager.AddBuildingTask(new BuildingTask(new Vector3(cell.transform.position.x, 1, cell.transform.position.z), GuiController.GetSelectedBuilding(), cell));
+            _taskManager.AddBuildingTask(new BuildingTask(new Vector3(cell.transform.position.x, 1, cell.transform.position.z), GuiController.GetSelectedBuilding(), cell));
         }
     }
 
     #region getters
-	public int getPopulationLimit() {return mPopulationLimit;}
-	public int getCurrentPopulation() {return mCurrentPopulation;}
+	public int GetPopulationLimit() {return _populationLimit;}
+	public int GetCurrentPopulation() {return _currentPopulation;}
 	#endregion
+
+	public void Notify(IEvent e)
+	{
+		switch (e.GetEventType())
+		{
+			case EventType.BuildOrder:
+				var buildOrderEvent = e as BuildOrderEvent;
+				Debug.Assert(buildOrderEvent != null, "buildOrderEvent != null");
+				AttemptBuildingTask(buildOrderEvent.Cell, buildOrderEvent.Building);
+				break;
+		}
+	}
 }

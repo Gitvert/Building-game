@@ -61,7 +61,7 @@ public class GuiController : MonoBehaviour
 		}
 		
 		//Checks if a button is hovered by the mouse and if so displays information about that building
-		foreach (Building b in _buildings)
+		foreach (var b in _buildings)
 		{
 			if (GUI.tooltip.CompareTo(b.GetName()) == 0)
 			{
@@ -74,7 +74,7 @@ public class GuiController : MonoBehaviour
 	//Displays info about the current resources
 	private void ResourceGui ()
 	{
-		string resourceInfo = "Population: " + _gameManager.getCurrentPopulation().ToString() + "/" + _gameManager.getPopulationLimit().ToString() + "\t\tTree: " +
+		string resourceInfo = "Population: " + _gameManager.GetCurrentPopulation().ToString() + "/" + _gameManager.GetPopulationLimit().ToString() + "\t\tTree: " +
             _resourceManager.GetTreeAmount().ToString() + "/" + _resourceManager.GetTreeLimit().ToString();
 		GUI.Box(new Rect(Screen.width-300, 0, 300, 25), "");
 		GUI.Box(new Rect(Screen.width-295, 5, 295, 25), resourceInfo, _infoTextStyle);

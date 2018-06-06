@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using Events;
 
 public class Cell : MonoBehaviour 
@@ -9,15 +8,11 @@ public class Cell : MonoBehaviour
 	GameObject mOccupyingObject = null;
 	public Material mMaterial;
 
-	static TaskManager _taskManager;
-	private GameManager _gameManager;
 	private EventDispatcher _eventDispatcher;
 	
 	// Use this for initialization
 	private void Start ()
 	{
-		_taskManager = GameObjectHelper.getComponent<TaskManager>(GameObjectHelper.findInScene("Misc"));
-		_gameManager = GameObjectHelper.getComponent<GameManager>(GameObjectHelper.findInScene("Misc"));
 		_eventDispatcher = EventDispatcher.GetInstance();
 
 		RandomizeNature();

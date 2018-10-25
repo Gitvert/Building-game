@@ -1,11 +1,14 @@
 ﻿using Events;
 using UnityEngine;
+using UnityEngine.UI;
 using Debug = System.Diagnostics.Debug;
 
 public class GameManager : MonoBehaviour, ISubscriber
 {
+	public Text PopulationText;
+	
 	private int _populationLimit;
-	private int _currentPopulation;
+	private int _currentPopulation = 0;
     private ResourceManager _resourceManager;
     private TaskManager _taskManager;
 	private EventDispatcher _eventDispatcher;
@@ -20,13 +23,7 @@ public class GameManager : MonoBehaviour, ISubscriber
 		
         _populationLimit = 10;
 		//TODO: Change this to a dynamic solution
-		_currentPopulation = 5;
-	}
-	
-	// Update is called once per frame
-	void Update () 
-	{
-	
+		IncreasePopulationLimit(5);
 	}
 
 	public bool CheckPopulationRoom()
@@ -34,18 +31,29 @@ public class GameManager : MonoBehaviour, ISubscriber
 		return _currentPopulation < _populationLimit;
 	}
 
-	public void IncreasePopulationLimit (int n)
+	public void IncreasePopulationLimit(int n)
 	{
 		_populationLimit += n;
+		UpdatePopulationText();
+	}
+
+	private void UpdatePopulationText()
+	{
+		PopulationText.text = string.Format("Population: {0}/{1}", _currentPopulation, _populationLimit);
 	}
 
     private void AttemptBuildingTask(Cell cell, Building building)
     {
-        if (_resourceManager.RequestResourceUsage(building.GetTreeCost(), building.GetStoneCost(), building.GetGoldCost()))
-        {
-            cell.SetOccupationStatus(Cell.Occupied.Constructing);
-            _taskManager.AddBuildingTask(new BuildingTask(new Vector3(cell.transform.position.x, 1, cell.transform.position.z), GuiController.GetSelectedBuilding(), cell));
-        }
+	    if (!_resourceManager.RequestResourceUsage(building.GetTreeCost(), building.GetStoneCost(), building.GetGoldCost()))
+	    {
+		    return;
+	    }
+	    
+	    cell.SetOccupationStatus(Cell.Occupied.Constructing);
+	    _taskManager.AddBuildingTask(new BuildingTask(
+		    new Vector3(cell.transform.position.x, 1, cell.transform.position.z), GuiController.GetSelectedBuilding(), 
+		    cell
+		));
     }
 
     #region getters

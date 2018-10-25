@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 
-public class GuiController : MonoBehaviour 
+
+public class GuiController : MonoBehaviour
 {
+	
 	private List<Building> _buildings;
 	private BuildingManager _buildingManager;
 	private GameManager _gameManager;
@@ -37,13 +38,15 @@ public class GuiController : MonoBehaviour
 				_selectedBuilding = null;
 			}
 		}
+		
+		
 	}
 
 	private void OnGUI ()
 	{	
-		ResourceGui();
+		/*ResourceGui();
 		if (_buildingGuiActive)
-			BuildingGui();
+			BuildingGui();*/
 	}
 
 	//The gui for selecting buildings
@@ -74,8 +77,8 @@ public class GuiController : MonoBehaviour
 	//Displays info about the current resources
 	private void ResourceGui ()
 	{
-		string resourceInfo = "Population: " + _gameManager.GetCurrentPopulation().ToString() + "/" + _gameManager.GetPopulationLimit().ToString() + "\t\tTree: " +
-            _resourceManager.GetTreeAmount().ToString() + "/" + _resourceManager.GetTreeLimit().ToString();
+		string resourceInfo = "Population: " + _gameManager.GetCurrentPopulation() + "/" + _gameManager.GetPopulationLimit() + "\t\tTree: " +
+            _resourceManager.GetTreeAmount() + "/" + _resourceManager.GetTreeLimit();
 		GUI.Box(new Rect(Screen.width-300, 0, 300, 25), "");
 		GUI.Box(new Rect(Screen.width-295, 5, 295, 25), resourceInfo, _infoTextStyle);
 	}

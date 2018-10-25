@@ -1,4 +1,5 @@
-﻿using Events;
+﻿using System;
+using Events;
 using UnityEngine;
 using UnityEngine.UI;
 using Debug = System.Diagnostics.Debug;
@@ -21,9 +22,7 @@ public class GameManager : MonoBehaviour, ISubscriber
 		_eventDispatcher = EventDispatcher.GetInstance();
 		_eventDispatcher.Subscribe(this);
 		
-        _populationLimit = 10;
-		//TODO: Change this to a dynamic solution
-		IncreasePopulationLimit(5);
+		IncreasePopulationLimit(10);
 	}
 
 	public bool CheckPopulationRoom()
@@ -70,6 +69,12 @@ public class GameManager : MonoBehaviour, ISubscriber
 				Debug.Assert(buildOrderEvent != null, "buildOrderEvent != null");
 				AttemptBuildingTask(buildOrderEvent.Cell, buildOrderEvent.Building);
 				break;
+			case EventType.GatherOrder:
+				break;
+			case EventType.MouseClick:
+				break;
+			default:
+				throw new ArgumentOutOfRangeException();
 		}
 	}
 }

@@ -2,5 +2,5 @@
 {
     BuildOrder,
     MouseClick,
-    GatherOrdervv
+    GatherOrder
 }
